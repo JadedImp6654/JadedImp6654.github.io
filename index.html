@@ -43,8 +43,8 @@ hr{margin:20px 0;border:none;border-top:1px solid #e5e7eb;}
     <input id="codeInput" type="password" placeholder="Code eingeben">
     <button onclick="checkCode()">Weiter mit Code</button>
     <hr>
-    <h3>Nur E-Mail senden</h3>
-    <input id="emailInput" type="email" placeholder="Ihre E-Mail">
+    <h3>Anfrage für täglichen Code</h3>
+    <input id="emailInput" type="email" placeholder="Ihre E-Mail oder ihren Namen">
     <button onclick="sendEmailOnly()">E-Mail senden</button>
   </div>
 </div>
@@ -54,7 +54,6 @@ hr{margin:20px 0;border:none;border-top:1px solid #e5e7eb;}
 
 <nav>
   <a onclick="showPage('start')">Startseite</a>
-  <a onclick="showPage('downloads')">Downloads</a>
   <a onclick="startSurvey()">Umfrage</a>
 </nav>
 
@@ -77,16 +76,6 @@ hr{margin:20px 0;border:none;border-top:1px solid #e5e7eb;}
 <div id="start" class="card" style="display:none">
   <h2>Willkommen zur Studie</h2>
   <p>Vielen Dank für Ihre Teilnahme an der Untersuchung zur Wirkung von Musik und Bild auf Entspannung.</p>
-</div>
-
-<!-- Downloads -->
-<div id="downloads" class="card" style="display:none">
-  <h2>Downloads</h2>
-  <ul>
-    <li><a href="anleitung.txt" download>Anleitung herunterladen</a></li>
-    <li><a href="erklärung.txt" download>Erklärung herunterladen</a></li>
-    <li><a href="entspannungsfilm.mov" download>Entspannungsfilm herunterladen</a></li>
-  </ul>
 </div>
 
 <!-- Survey -->
@@ -368,3 +357,4 @@ function finish(){ ts4.value = new Date().toISOString(); }
 </script>
 </body>
 </html>
+
