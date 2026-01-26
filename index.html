@@ -39,7 +39,7 @@ hr{margin:20px 0;border:none;border-top:1px solid #e5e7eb;}
 <!-- CODE & E-MAIL -->
 <div class="container" id="codeScreen">
   <div class="card">
-    <h2>Bitte beachten Sie das dies nur ein privates Schulprojekt ist und daher nur für privat bekannte Personen zugänglich ist.
+    <h2>Bitte beachten Sie, dass dies nur ein privates Schulprojekt ist und daher nur für privat bekannte Personen zugänglich ist.
       Der Zugriffscode ändert sich täglich:</h2>
     <input id="codeInput" type="password" placeholder="Code eingeben">
     <button onclick="checkCode()">Weiter mit Code</button>
@@ -276,17 +276,24 @@ function sendEmailOnly(){
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body: JSON.stringify({email:email,code:getDailyCode()})
-  }).then(()=>alert("E-Mail gesendet!")).catch(()=>alert("Fehler!"));
+  })
+  .then(response => {
+    if(response.ok) alert("E-Mail gesendet!");
+    else alert("Fehler beim Senden der E-Mail!");
+  })
+  .catch(()=>alert("Fehler beim Senden der E-Mail!"));
 }
 
 // Code prüfen + App starten
 function checkCode(){
   const entered = document.getElementById("codeInput").value.trim();
-  if(entered===getDailyCode(); {
-    document.getElementById("codeScreen").style.display="none";
-    document.getElementById("app").style.display="block";
-    document.getElementById("consent").style.display="block";
-  } else { alert("Falscher Code für heute!"); }
+  if(entered === getDailyCode()) {
+    document.getElementById("codeScreen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    document.getElementById("consent").style.display = "block";
+  } else {
+    alert("Falscher Code für heute!");
+  }
 }
 
 // Consent akzeptieren
@@ -298,7 +305,7 @@ function acceptConsent(){
 // Navigation
 function showPage(id){
   document.getElementById("start").style.display="none";
-  document.getElementById("downloads").style.display="none";
+  document.getElementById("downloads")?.style.display="none";
   document.getElementById("survey").style.display="none";
   document.getElementById(id).style.display="block";
 }
@@ -357,8 +364,3 @@ function finish(){ ts4.value = new Date().toISOString(); }
 </script>
 </body>
 </html>
-
-
-
-
-
