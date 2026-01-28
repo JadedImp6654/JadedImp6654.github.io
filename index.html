@@ -1,89 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Entspannungsstudie</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#f4f6fb;
-  --card:#fff;
-  --accent:#2563eb;
-  --text:#111827;
-  --muted:#6b7280;
-}
+:root{--bg:#f6f8fb;--card:#fff;--accent:#2563eb;--accent2:#1e40af;--muted:#6b7280;--success:#16a34a;--danger:#ef4444}
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);}
-nav{background:#fff;padding:16px 40px;border-bottom:1px solid #e5e7eb;display:flex;gap:32px;}
-nav a{cursor:pointer;font-weight:600;text-decoration:none;color:var(--text);}
-nav a:hover{color:var(--accent);}
-.container{max-width:900px;margin:50px auto;padding:0 20px;}
-.card{background:var(--card);padding:40px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.08);animation:fade .4s ease;}
-@keyframes fade{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:none}}
-button{margin-top:30px;padding:14px 30px;border:none;border-radius:10px;background:var(--accent);color:white;font-size:16px;cursor:pointer;}
-button:disabled{background:#9ca3af;cursor:not-allowed;}
-input[type=password], input[type=email]{width:100%;padding:14px;font-size:16px;border-radius:8px;border:1px solid #d1d5db;margin-top:10px;}
-label{display:block;margin:10px 0;}
-.progress{height:12px;background:#e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:10px;}
-.progress div{height:100%;width:0%;background:var(--accent);transition:.4s;}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:linear-gradient(180deg,var(--bg),#fff);color:#0f172a}
+.container{max-width:1000px;margin:40px auto;padding:20px}
+.card{background:#fff;padding:32px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.06);margin-bottom:24px}
+h1,h2,h3{margin-top:0}
+label{display:block;margin:10px 0;color:var(--muted)}
+input[type=text],input[type=email],input[type=password]{width:100%;padding:12px;border-radius:10px;border:1px solid #e5e7eb}
+button{padding:12px 18px;border:none;border-radius:10px;font-weight:700;cursor:pointer}
+.primary{background:var(--accent);color:#fff}
+button:disabled{opacity:.6;cursor:not-allowed}
+.status{margin-top:10px;font-size:14px}
+.success{color:var(--success)}
+.error{color:var(--danger)}
+.progress{height:12px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin-bottom:10px}
+.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.4s}
 .survey-step{display:none}
 .survey-step.active{display:block}
-video{width:100%;border-radius:14px;margin-top:20px}
-ul{padding-left:18px}
-input[type=text]{width:100%;padding:6px;border-radius:6px;border:1px solid #d1d5db;margin-top:5px;}
-hr{margin:20px 0;border:none;border-top:1px solid #e5e7eb;}
+video{width:100%;border-radius:14px;margin-top:15px}
+.nav{display:flex;gap:20px;margin-bottom:20px}
+.nav button{background:none;color:var(--accent);padding:0}
+.small{font-size:13px;color:var(--muted)}
 </style>
 </head>
 <body>
-
-<!-- CODE & E-MAIL -->
-<div class="container" id="codeScreen">
-  <div class="card">
-    <h2>Bitte beachten Sie, dass dies nur ein privates Schulprojekt ist und daher nur für privat bekannte Personen zugänglich ist.
-      Der Zugriffscode ändert sich täglich:</h2>
-    <input id="codeInput" type="password" placeholder="Code eingeben">
-    <button onclick="checkCode()">Weiter mit Code</button>
-    <hr>
-    <h3>Anfrage für täglichen Code</h3>
-    <input id="emailInput" type="email" placeholder="Ihre E-Mail oder Ihren Namen">
-    <button onclick="sendEmailOnly()">E-Mail senden</button>
-  </div>
-</div>
-
-<!-- APP -->
-<div id="app" style="display:none">
-
-<nav>
-  <a onclick="showPage('start')">Startseite</a>
-  <a onclick="startSurvey()">Umfrage</a>
-</nav>
-
 <div class="container">
 
-<!-- DSGVO -->
-<div id="consent" class="card" style="display:none">
-  <h2>Einwilligung zur Teilnahme</h2>
-  <p>
-    Sie nehmen an einer wissenschaftlichen Studie zur Wirkung von Musik und Bildern auf Entspannung teil.
-    Ihre Antworten werden pseudonym gespeichert. Timestamps und IP-Adresse werden erfasst.
-    Die Teilnahme ist freiwillig und kann jederzeit abgebrochen werden.
-    Kontakt: <strong>darian@mueller-gorges.de</strong>
-  </p>
-  <label><input type="checkbox" id="consentCheck"> Ich habe die Hinweise gelesen und willige ein.</label>
-  <button onclick="acceptConsent()" id="consentBtn" disabled>Weiter zur Umfrage</button>
+<!-- LOGIN -->
+<div id="loginCard" class="card">
+<h1>Zugangscode erhalten und aktivieren</h1>
+<p class="small">Bitte beachten sie, dass dies eine privates Projekt ist und daher nur eingeschränkt öffentlich ist. Die E-Mail wird geprüft und nur an bekannte Personen gesendet.</p>
+<label>Code anfordern</label>
+<input id="emailInput" type="email" placeholder="name@beispiel.de">
+<button class="primary" id="emailBtn">Code per E-Mail anfordern</button>
+<div id="emailStatus" class="status"></div>
+<hr style="margin:25px 0;border:none;border-top:1px solid #eee;">
+<label>Zugriffscode eingeben</label>
+<input id="codeInput" type="password" placeholder="Code">
+<button class="primary" id="checkBtn">Weiter zur eigentlichen Seite</button>
+<div id="codeStatus" class="status"></div>
 </div>
 
-<!-- Startseite -->
-<div id="start" class="card" style="display:none">
-  <h2>Willkommen zur Studie</h2>
-  <p>Vielen Dank für Ihre Teilnahme an der Untersuchung zur Wirkung von Musik und Bild auf Entspannung.</p>
+<!-- STUDIEN-APP -->
+<div id="app" style="display:none">
+<div class="nav">
+<button onclick="showPage('start')">Startseite</button>
+<button onclick="startSurvey()">Umfrage</button>
 </div>
 
-<!-- Survey -->
-<div id="survey" style="display:none">
+<div id="start" class="card">
+<h2>Willkommen zur Entspannungsstudie</h2>
+<p>Vielen Dank für Ihre Teilnahme.</p>
+</div>
+
+<div id="survey" class="card" style="display:none">
 <div class="progress"><div id="bar"></div></div>
-<div id="progressText" style="text-align:right;margin-bottom:10px;font-weight:600;color:var(--muted)">Frage 1 von 12</div>
-
+<div id="progressText" class="small" style="text-align:right">Frage 1</div>
 <form action="https://formspree.io/f/mzddpkee" method="POST">
 <input type="hidden" name="participant_id" id="pid">
 <input type="hidden" name="ts_startSurvey" id="ts1">
@@ -92,42 +71,39 @@ hr{margin:20px 0;border:none;border-top:1px solid #e5e7eb;}
 <input type="hidden" name="ts_endSurvey" id="ts4">
 
 <!-- SCHRITTE 1–12 -->
-<!-- Schritt 1 -->
+
 <div class="survey-step active">
 <h3>1. Alter</h3>
-<label><input type="radio" name="Alter" value="<18"> unter 18</label>
-<label><input type="radio" name="Alter" value="18-29"> 18–29</label>
-<label><input type="radio" name="Alter" value="30-44"> 30–44</label>
-<label><input type="radio" name="Alter" value="45-59"> 45–59</label>
-<label><input type="radio" name="Alter" value="60+"> 60+</label>
+<label><input type="radio" name="Alter" value="<18">unter 18</label>
+<label><input type="radio" name="Alter" value="18-29">18–29</label>
+<label><input type="radio" name="Alter" value="30-44">30–44</label>
+<label><input type="radio" name="Alter" value="45-59">45–59</label>
+<label><input type="radio" name="Alter" value="60+">60+</label>
 <button type="button" onclick="next()">Weiter</button>
 </div>
 
-<!-- Schritt 2 -->
 <div class="survey-step">
 <h3>2. Hören Sie regelmäßig Musik zur Entspannung?</h3>
-<label><input type="radio" name="Musik" value="häufig"> ja, häufig</label>
-<label><input type="radio" name="Musik" value="gelegentlich"> gelegentlich</label>
-<label><input type="radio" name="Musik" value="selten"> selten</label>
-<label><input type="radio" name="Musik" value="nie"> nie</label>
+<label><input type="radio" name="Musik" value="häufig">ja, häufig</label>
+<label><input type="radio" name="Musik" value="gelegentlich">gelegentlich</label>
+<label><input type="radio" name="Musik" value="selten">selten</label>
+<label><input type="radio" name="Musik" value="nie">nie</label>
 <button type="button" onclick="next()">Weiter</button>
 </div>
 
-<!-- Schritt 3 -->
 <div class="survey-step">
-<h3>3. Haben Sie bereits Erfahrung mit Entspannungsmethoden? (Mehrfachauswahl möglich)</h3>
-<label><input type="checkbox" name="Methoden" value="Musik"> Musik</label>
-<label><input type="checkbox" name="Methoden" value="Meditation"> Meditation</label>
-<label><input type="checkbox" name="Methoden" value="Atemübungen"> Atemübungen</label>
-<label><input type="checkbox" name="Methoden" value="Yoga"> Yoga</label>
-<label><input type="checkbox" name="Methoden" value="keine"> keine</label>
+<h3>3. Erfahrung mit Entspannungsmethoden (Mehrfachauswahl)</h3>
+<label><input type="checkbox" name="Methoden" value="Musik">Musik</label>
+<label><input type="checkbox" name="Methoden" value="Meditation">Meditation</label>
+<label><input type="checkbox" name="Methoden" value="Atemübungen">Atemübungen</label>
+<label><input type="checkbox" name="Methoden" value="Yoga">Yoga</label>
+<label><input type="checkbox" name="Methoden" value="keine">keine</label>
 <label><input type="checkbox" id="sonstigesCheck"> Sonstiges: <input type="text" id="sonstigesText" name="Methoden_Sonstiges" disabled></label>
 <button type="button" onclick="next()">Weiter</button>
 </div>
 
-<!-- Schritt 4 -->
 <div class="survey-step">
-<h3>4. Wie gestresst haben Sie sich vor dem Ansehen des Films gefühlt? (1 = gar nicht | 5 = sehr)</h3>
+<h3>4. Stress vor Film (1–5)</h3>
 <label><input type="radio" name="StressVor" value="1">1</label>
 <label><input type="radio" name="StressVor" value="2">2</label>
 <label><input type="radio" name="StressVor" value="3">3</label>
@@ -136,30 +112,26 @@ hr{margin:20px 0;border:none;border-top:1px solid #e5e7eb;}
 <button type="button" onclick="next()">Weiter</button>
 </div>
 
-<!-- Schritt 5 -->
 <div class="survey-step">
-<h3>5. Wie aufmerksam und aufnahmefähig haben Sie sich vor dem Film gefühlt?</h3>
-<label><input type="radio" name="Aufmerksamkeit" value="sehr gering"> sehr gering</label>
-<label><input type="radio" name="Aufmerksamkeit" value="eher gering"> eher gering</label>
-<label><input type="radio" name="Aufmerksamkeit" value="mittel"> mittel</label>
-<label><input type="radio" name="Aufmerksamkeit" value="eher hoch"> eher hoch</label>
-<label><input type="radio" name="Aufmerksamkeit" value="sehr hoch"> sehr hoch</label>
+<h3>5. Aufmerksamkeit vor Film</h3>
+<label><input type="radio" name="Aufmerksamkeit" value="sehr gering">sehr gering</label>
+<label><input type="radio" name="Aufmerksamkeit" value="eher gering">eher gering</label>
+<label><input type="radio" name="Aufmerksamkeit" value="mittel">mittel</label>
+<label><input type="radio" name="Aufmerksamkeit" value="eher hoch">eher hoch</label>
+<label><input type="radio" name="Aufmerksamkeit" value="sehr hoch">sehr hoch</label>
 <button type="button" onclick="next()">Weiter</button>
 </div>
 
-<!-- Schritt 6: Video -->
 <div class="survey-step">
-<h3>6. Bitte sehen Sie den Film vollständig an</h3>
+<h3>6. Film ansehen</h3>
 <video id="video" controls>
 <source src="entspannungsfilm.mov" type="video/mp4">
-Ihr Browser unterstützt dieses Video nicht.
 </video>
 <button id="videoBtn" type="button" disabled onclick="next()">Weiter</button>
 </div>
 
-<!-- Schritt 7 -->
 <div class="survey-step">
-<h3>7. Wie entspannt fühlen Sie sich nach dem Ansehen des Films? (1 = gar nicht | 5 = sehr)</h3>
+<h3>7. Entspannung nach Film (1–5)</h3>
 <label><input type="radio" name="Entspannung" value="1">1</label>
 <label><input type="radio" name="Entspannung" value="2">2</label>
 <label><input type="radio" name="Entspannung" value="3">3</label>
@@ -168,58 +140,53 @@ Ihr Browser unterstützt dieses Video nicht.
 <button type="button" onclick="next()">Weiter</button>
 </div>
 
-<!-- Schritt 8 -->
 <div class="survey-step">
-<h3>8. Hat sich Ihr Stresslevel durch den Film verändert?</h3>
-<label><input type="radio" name="StressChange" value="deutlich verringert"> deutlich verringert</label>
-<label><input type="radio" name="StressChange" value="leicht verringert"> leicht verringert</label>
-<label><input type="radio" name="StressChange" value="unverändert"> unverändert</label>
-<label><input type="radio" name="StressChange" value="leicht erhöht"> leicht erhöht</label>
-<label><input type="radio" name="StressChange" value="deutlich erhöht"> deutlich erhöht</label>
+<h3>8. Veränderung Stresslevel</h3>
+<label><input type="radio" name="StressChange" value="deutlich verringert">deutlich verringert</label>
+<label><input type="radio" name="StressChange" value="leicht verringert">leicht verringert</label>
+<label><input type="radio" name="StressChange" value="unverändert">unverändert</label>
+<label><input type="radio" name="StressChange" value="leicht erhöht">leicht erhöht</label>
+<label><input type="radio" name="StressChange" value="deutlich erhöht">deutlich erhöht</label>
 <button type="button" onclick="next()">Weiter</button>
 </div>
 
-<!-- Schritt 9 -->
 <div class="survey-step">
-<h3>9. Wie angenehm empfanden Sie die Musik?</h3>
-<label><input type="radio" name="MusikAng" value="sehr unangenehm"> sehr unangenehm</label>
-<label><input type="radio" name="MusikAng" value="eher unangenehm"> eher unangenehm</label>
-<label><input type="radio" name="MusikAng" value="neutral"> neutral</label>
-<label><input type="radio" name="MusikAng" value="eher angenehm"> eher angenehm</label>
-<label><input type="radio" name="MusikAng" value="sehr angenehm"> sehr angenehm</label>
+<h3>9. Musikempfinden</h3>
+<label><input type="radio" name="MusikAng" value="sehr unangenehm">sehr unangenehm</label>
+<label><input type="radio" name="MusikAng" value="eher unangenehm">eher unangenehm</label>
+<label><input type="radio" name="MusikAng" value="neutral">neutral</label>
+<label><input type="radio" name="MusikAng" value="eher angenehm">eher angenehm</label>
+<label><input type="radio" name="MusikAng" value="sehr angenehm">sehr angenehm</label>
 <button type="button" onclick="next()">Weiter</button>
 </div>
 
-<!-- Schritt 10 -->
 <div class="survey-step">
-<h3>10. Wie angenehm empfanden Sie die Bildsequenzen?</h3>
-<label><input type="radio" name="BildAng" value="sehr unangenehm"> sehr unangenehm</label>
-<label><input type="radio" name="BildAng" value="eher unangenehm"> eher unangenehm</label>
-<label><input type="radio" name="BildAng" value="neutral"> neutral</label>
-<label><input type="radio" name="BildAng" value="eher angenehm"> eher angenehm</label>
-<label><input type="radio" name="BildAng" value="sehr angenehm"> sehr angenehm</label>
+<h3>10. Bildsequenzen</h3>
+<label><input type="radio" name="BildAng" value="sehr unangenehm">sehr unangenehm</label>
+<label><input type="radio" name="BildAng" value="eher unangenehm">eher unangenehm</label>
+<label><input type="radio" name="BildAng" value="neutral">neutral</label>
+<label><input type="radio" name="BildAng" value="eher angenehm">eher angenehm</label>
+<label><input type="radio" name="BildAng" value="sehr angenehm">sehr angenehm</label>
 <button type="button" onclick="next()">Weiter</button>
 </div>
 
-<!-- Schritt 11 -->
 <div class="survey-step">
-<h3>11. Die Kombination aus Musik und Bildern wirkte auf mich entspannend</h3>
-<label><input type="radio" name="Kombi" value="stimme gar nicht zu"> stimme gar nicht zu</label>
-<label><input type="radio" name="Kombi" value="stimme eher nicht zu"> stimme eher nicht zu</label>
-<label><input type="radio" name="Kombi" value="teils/teils"> teils / teils</label>
-<label><input type="radio" name="Kombi" value="stimme eher zu"> stimme eher zu</label>
-<label><input type="radio" name="Kombi" value="stimme voll zu"> stimme voll zu</label>
+<h3>11. Kombination Musik + Bilder entspannend?</h3>
+<label><input type="radio" name="Kombi" value="stimme gar nicht zu">stimme gar nicht zu</label>
+<label><input type="radio" name="Kombi" value="stimme eher nicht zu">stimme eher nicht zu</label>
+<label><input type="radio" name="Kombi" value="teils/teils">teils / teils</label>
+<label><input type="radio" name="Kombi" value="stimme eher zu">stimme eher zu</label>
+<label><input type="radio" name="Kombi" value="stimme voll zu">stimme voll zu</label>
 <button type="button" onclick="next()">Weiter</button>
 </div>
 
-<!-- Schritt 12 -->
 <div class="survey-step">
-<h3>12. Während des Films konnte ich gedanklich abschalten</h3>
-<label><input type="radio" name="Abschalten" value="stimme gar nicht zu"> stimme gar nicht zu</label>
-<label><input type="radio" name="Abschalten" value="stimme eher nicht zu"> stimme eher nicht zu</label>
-<label><input type="radio" name="Abschalten" value="teils/teils"> teils / teils</label>
-<label><input type="radio" name="Abschalten" value="stimme eher zu"> stimme eher zu</label>
-<label><input type="radio" name="Abschalten" value="stimme voll zu"> stimme voll zu</label>
+<h3>12. Während des Films gedanklich abschalten?</h3>
+<label><input type="radio" name="Abschalten" value="stimme gar nicht zu">stimme gar nicht zu</label>
+<label><input type="radio" name="Abschalten" value="stimme eher nicht zu">stimme eher nicht zu</label>
+<label><input type="radio" name="Abschalten" value="teils/teils">teils / teils</label>
+<label><input type="radio" name="Abschalten" value="stimme eher zu">stimme eher zu</label>
+<label><input type="radio" name="Abschalten" value="stimme voll zu">stimme voll zu</label>
 <button type="submit" onclick="finish()">Absenden</button>
 </div>
 
@@ -229,138 +196,17 @@ Ihr Browser unterstützt dieses Video nicht.
 </div>
 
 <script>
-// Elemente
-const consentCheck = document.getElementById("consentCheck");
-const consentBtn = document.getElementById("consentBtn");
-const sonstigesCheck = document.getElementById("sonstigesCheck");
-const sonstigesText = document.getElementById("sonstigesText");
-const steps = document.querySelectorAll(".survey-step");
-const bar = document.getElementById("bar");
-const progressText = document.getElementById("progressText");
-const video = document.getElementById("video");
-const videoBtn = document.getElementById("videoBtn");
-const pid = document.getElementById("pid");
-const ts1 = document.getElementById("ts1");
-const ts2 = document.getElementById("ts2");
-const ts3 = document.getElementById("ts3");
-const ts4 = document.getElementById("ts4");
-
-// Sonstiges aktivieren
-sonstigesCheck.addEventListener("change", ()=>{
-  sonstigesText.disabled = !sonstigesCheck.checked;
-  if(!sonstigesCheck.checked) sonstigesText.value="";
-});
-
-// DSGVO Button
-consentCheck.addEventListener("change", ()=>{
-  consentBtn.disabled = !consentCheck.checked;
-});
-
-// Sicherer Tagescode
-function getDailyCode(){
-  const stored = JSON.parse(localStorage.getItem("dailyCode") || "{}");
-  const today = new Date().toISOString().slice(0,10);
-  if(stored.date===today) return stored.code;
-  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let code='';
-  for(let i=0;i<10;i++) code += chars.charAt(Math.floor(Math.random()*chars.length));
-  localStorage.setItem("dailyCode",JSON.stringify({date:today,code:code}));
-  return code;
-}
-
-// E-Mail unabhängig senden
-function sendEmailOnly(){
-  const email = document.getElementById("emailInput").value.trim();
-  if(!email){alert("Bitte E-Mail eingeben!"); return;}
-  fetch("https://formspree.io/f/mojjabdd",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({email:email,code:getDailyCode()})
-  })
-  .then(response => {
-    if(response.ok) alert("E-Mail gesendet!");
-    else alert("Fehler beim Senden der E-Mail!");
-  })
-  .catch(()=>alert("Fehler beim Senden der E-Mail!"));
-}
-
-// Code prüfen + App starten
-function checkCode(){
-  const entered = document.getElementById("codeInput").value.trim();
-  if(entered === getDailyCode()) {
-    document.getElementById("codeScreen").style.display = "none";
-    document.getElementById("app").style.display = "block";
-    document.getElementById("consent").style.display = "block";
-  } else {
-    alert("Falscher Code für heute!");
-  }
-}
-
-// Consent akzeptieren
-function acceptConsent(){
-  document.getElementById("consent").style.display="none";
-  startSurvey();
-}
-
-// Navigation
-function showPage(id){
-  document.getElementById("start").style.display="none";
-  document.getElementById("downloads")?.style.display="none";
-  document.getElementById("survey").style.display="none";
-  document.getElementById(id).style.display="block";
-}
-
-// Teilnehmer-ID persistent
-function getOrCreateParticipantID(){
-  let pidVal = localStorage.getItem("participant_id");
-  if(!pidVal){
-    pidVal="P-"+Math.random().toString(36).substring(2,8).toUpperCase();
-    localStorage.setItem("participant_id",pidVal);
-  }
-  return pidVal;
-}
-
-// Survey
-let step=0;
-function startSurvey(){
-  showPage("survey");
-  step=0;
-  steps.forEach(s=>s.classList.remove("active"));
-  steps[0].classList.add("active");
-  ts1.value=new Date().toISOString();
-  pid.value=getOrCreateParticipantID();
-  updateProgress();
-}
-
-function next(){
-  const currentStep=steps[step];
-  const inputs=currentStep.querySelectorAll("input");
-  if(inputs.length){
-    const valid=[...inputs].some(i=>{
-      if(i.type==="radio"||i.type==="checkbox") return i.checked;
-      else if(i.type==="text") return i.value.trim()!=="";
-      return false;
-    });
-    if(!valid){ alert("Bitte beantworten Sie die Frage, bevor Sie fortfahren!"); return; }
-  }
-  currentStep.classList.remove("active");
-  step++;
-  if(step<steps.length) steps[step].classList.add("active");
-  updateProgress();
-}
-
-function updateProgress(){
-  bar.style.width=((step+1)/steps.length*100)+"%";
-  progressText.innerText=`Frage ${step+1} von ${steps.length}`;
-}
-
-// Video Timestamps
-video.onplay = () => ts2.value = new Date().toISOString();
-video.onended = () => { ts3.value = new Date().toISOString(); videoBtn.disabled=false; };
-
-// Finish
-function finish(){ ts4.value = new Date().toISOString(); }
-
+function getDailyCode(){const s=JSON.parse(localStorage.getItem('dailyCode')||'{}');const t=new Date().toISOString().slice(0,10);if(s.date===t)return s.code;const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let code='';for(let i=0;i<8;i++)code+=c[Math.floor(Math.random()*c.length)];localStorage.setItem('dailyCode',JSON.stringify({date:t,code}));return code}
+emailBtn.onclick=async()=>{const e=emailInput.value.trim();if(!e){emailStatus.textContent='E-Mail eingeben';emailStatus.className='status error';return}const p=new URLSearchParams();p.append('email',e);p.append('code',getDailyCode());await fetch('https://formspree.io/f/mzddpkee',{method:'POST',body:p,headers:{Accept:'application/json'}});emailStatus.textContent='Code gesendet';emailStatus.className='status success'}
+checkBtn.onclick=()=>{if(codeInput.value.trim()===getDailyCode()){loginCard.style.display='none';app.style.display='block'}else{codeStatus.textContent='Falscher Code';codeStatus.className='status error'}}
+function showPage(id){start.style.display='none';survey.style.display='none';document.getElementById(id).style.display='block'}
+let step=0;const steps=document.querySelectorAll('.survey-step');const bar=document.getElementById('bar');const progressText=document.getElementById('progressText');
+function startSurvey(){showPage('survey');step=0;steps.forEach(s=>s.classList.remove('active'));steps[0].classList.add('active');ts1.value=new Date().toISOString();pid.value='P-'+Math.random().toString(36).slice(2,8).toUpperCase();updateProgress()}
+function next(){steps[step].classList.remove('active');step++;steps[step].classList.add('active');updateProgress()}
+function updateProgress(){bar.style.width=((step+1)/steps.length*100)+'%';progressText.innerText='Frage '+(step+1)+' von '+steps.length}
+video.onplay=()=>ts2.value=new Date().toISOString();video.onended=()=>{ts3.value=new Date().toISOString();videoBtn.disabled=false}
+function finish(){ts4.value=new Date().toISOString()}
+const sonstigesCheck=document.getElementById('sonstigesCheck');const sonstigesText=document.getElementById('sonstigesText');sonstigesCheck.addEventListener('change',()=>{sonstigesText.disabled=!sonstigesCheck.checked;if(!sonstigesCheck.checked)sonstigesText.value='';});
 </script>
 </body>
 </html>
