@@ -36,7 +36,7 @@ video{width:100%;border-radius:14px;margin-top:15px}
 <!-- LOGIN -->
 <div id="loginCard" class="card">
 <h1>Zugangscode erhalten und aktivieren</h1>
-<p class="small">Bitte beachten sie, dass dies eine privates Projekt ist und daher nur eingeschränkt öffentlich ist. Die E-Mail wird geprüft und nur an bekannte Personen gesendet.</p>
+<p class="small">Bitte beachten Sie, dass dies ein privates Projekt ist und daher nur eingeschränkt öffentlich ist. Die E-Mail wird geprüft und nur an bekannte Personen gesendet.</p>
 <label>Code anfordern</label>
 <input id="emailInput" type="email" placeholder="name@beispiel.de">
 <button class="primary" id="emailBtn">Code per E-Mail anfordern</button>
@@ -51,15 +51,26 @@ video{width:100%;border-radius:14px;margin-top:15px}
 <!-- STUDIEN-APP -->
 <div id="app" style="display:none">
 <div class="nav">
-<button onclick="showPage('start')">Startseite</button>
-<button onclick="startSurvey()">Umfrage</button>
+  <button onclick="showPage('start')">Startseite</button>
+  <button onclick="startSurvey()">Umfrage</button>
+  <button onclick="showPage('erklaerung')">Erklärung</button>
 </div>
 
+<!-- STARTSEITE -->
 <div id="start" class="card">
 <h2>Willkommen zur Entspannungsstudie</h2>
 <p>Vielen Dank für Ihre Teilnahme.</p>
 </div>
 
+<!-- ERKLÄRUNG -->
+<div id="erklaerung" class="card" style="display:none">
+<h2>Erklärung zur Entspannungsstudie</h2>
+<p>Diese Studie untersucht, wie sich verschiedene Entspannungsmethoden, wie Musik oder visuelle Inhalte, auf das Stresslevel und die Aufmerksamkeit auswirken. Ihre Teilnahme ist freiwillig und die Daten werden anonymisiert gesammelt.</p>
+<p>Bitte beantworten Sie die Fragen ehrlich und vollständig. Die Ergebnisse dienen ausschließlich wissenschaftlichen Zwecken.</p>
+<p>Bei Fragen wenden Sie sich bitte an den Projektleiter.</p>
+</div>
+
+<!-- UMFRAGE -->
 <div id="survey" class="card" style="display:none">
 <div class="progress"><div id="bar"></div></div>
 <div id="progressText" class="small" style="text-align:right">Frage 1</div>
@@ -196,17 +207,89 @@ video{width:100%;border-radius:14px;margin-top:15px}
 </div>
 
 <script>
-function getDailyCode(){const s=JSON.parse(localStorage.getItem('dailyCode')||'{}');const t=new Date().toISOString().slice(0,10);if(s.date===t)return s.code;const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let code='';for(let i=0;i<8;i++)code+=c[Math.floor(Math.random()*c.length)];localStorage.setItem('dailyCode',JSON.stringify({date:t,code}));return code}
-emailBtn.onclick=async()=>{const e=emailInput.value.trim();if(!e){emailStatus.textContent='E-Mail eingeben';emailStatus.className='status error';return}const p=new URLSearchParams();p.append('email',e);p.append('code',getDailyCode());await fetch('https://formspree.io/f/mzddpkee',{method:'POST',body:p,headers:{Accept:'application/json'}});emailStatus.textContent='Code gesendet';emailStatus.className='status success'}
-checkBtn.onclick=()=>{if(codeInput.value.trim()===getDailyCode()){loginCard.style.display='none';app.style.display='block'}else{codeStatus.textContent='Falscher Code';codeStatus.className='status error'}}
-function showPage(id){start.style.display='none';survey.style.display='none';document.getElementById(id).style.display='block'}
-let step=0;const steps=document.querySelectorAll('.survey-step');const bar=document.getElementById('bar');const progressText=document.getElementById('progressText');
-function startSurvey(){showPage('survey');step=0;steps.forEach(s=>s.classList.remove('active'));steps[0].classList.add('active');ts1.value=new Date().toISOString();pid.value='P-'+Math.random().toString(36).slice(2,8).toUpperCase();updateProgress()}
-function next(){steps[step].classList.remove('active');step++;steps[step].classList.add('active');updateProgress()}
-function updateProgress(){bar.style.width=((step+1)/steps.length*100)+'%';progressText.innerText='Frage '+(step+1)+' von '+steps.length}
-video.onplay=()=>ts2.value=new Date().toISOString();video.onended=()=>{ts3.value=new Date().toISOString();videoBtn.disabled=false}
-function finish(){ts4.value=new Date().toISOString()}
-const sonstigesCheck=document.getElementById('sonstigesCheck');const sonstigesText=document.getElementById('sonstigesText');sonstigesCheck.addEventListener('change',()=>{sonstigesText.disabled=!sonstigesCheck.checked;if(!sonstigesCheck.checked)sonstigesText.value='';});
+function getDailyCode(){
+    const s = JSON.parse(localStorage.getItem('dailyCode')||'{}');
+    const t = new Date().toISOString().slice(0,10);
+    if(s.date===t) return s.code;
+    const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code='';
+    for(let i=0;i<8;i++) code+=c[Math.floor(Math.random()*c.length)];
+    localStorage.setItem('dailyCode',JSON.stringify({date:t,code}));
+    return code;
+}
+
+emailBtn.onclick=async()=>{
+    const e=emailInput.value.trim();
+    if(!e){
+        emailStatus.textContent='E-Mail eingeben';
+        emailStatus.className='status error';
+        return;
+    }
+    const p=new URLSearchParams();
+    p.append('email',e);
+    p.append('code',getDailyCode());
+    await fetch('https://formspree.io/f/mzddpkee',{method:'POST',body:p,headers:{Accept:'application/json'}});
+    emailStatus.textContent='Code gesendet';
+    emailStatus.className='status success';
+}
+
+checkBtn.onclick=()=>{
+    if(codeInput.value.trim()===getDailyCode()){
+        loginCard.style.display='none';
+        app.style.display='block';
+    } else {
+        codeStatus.textContent='Falscher Code';
+        codeStatus.className='status error';
+    }
+}
+
+function showPage(id){
+    const pages = ['start','survey','erklaerung'];
+    pages.forEach(p => document.getElementById(p).style.display='none');
+    document.getElementById(id).style.display='block';
+}
+
+let step=0;
+const steps=document.querySelectorAll('.survey-step');
+const bar=document.getElementById('bar');
+const progressText=document.getElementById('progressText');
+
+function startSurvey(){
+    showPage('survey');
+    step=0;
+    steps.forEach(s=>s.classList.remove('active'));
+    steps[0].classList.add('active');
+    ts1.value=new Date().toISOString();
+    pid.value='P-'+Math.random().toString(36).slice(2,8).toUpperCase();
+    updateProgress();
+}
+
+function next(){
+    steps[step].classList.remove('active');
+    step++;
+    steps[step].classList.add('active');
+    updateProgress();
+}
+
+function updateProgress(){
+    bar.style.width=((step+1)/steps.length*100)+'%';
+    progressText.innerText='Frage '+(step+1)+' von '+steps.length;
+}
+
+video.onplay=()=>ts2.value=new Date().toISOString();
+video.onended=()=>{
+    ts3.value=new Date().toISOString();
+    videoBtn.disabled=false;
+}
+
+function finish(){ts4.value=new Date().toISOString();}
+
+const sonstigesCheck=document.getElementById('sonstigesCheck');
+const sonstigesText=document.getElementById('sonstigesText');
+sonstigesCheck.addEventListener('change',()=>{
+    sonstigesText.disabled=!sonstigesCheck.checked;
+    if(!sonstigesCheck.checked) sonstigesText.value='';
+});
 </script>
 </body>
 </html>
